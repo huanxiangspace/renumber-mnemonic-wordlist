@@ -1,3 +1,21 @@
+body {
+  padding: 30px;
+  margin: 0;
+}
+
+body::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
 h1 {
-  text-decoration: underline;
+  text-align: center;
+  margin-top: 0;
+  cursor: pointer;
+}
+
+li {
+  width: 120px;
+  float: left;
 }
