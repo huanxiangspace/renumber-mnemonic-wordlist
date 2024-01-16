@@ -2051,11 +2051,25 @@ zoo`.split("\n");
   const list = [];
 
   while (words.length) {
-    const w = words.splice(Math.floor(words.length * Math.random()), 1)[0];
-    list.push(`<li>${w}</li>`);
+    const word = words.splice(Math.floor(words.length * Math.random()), 1)[0];
+    list.push({
+      index: list.length + 1,
+      word,
+    });
   }
 
-  document.querySelector("#list").innerHTML = list.join("");
+  list.sort((a, b) => a.word.localeCompare(b.word));
+
+  document.querySelector("#list").innerHTML = list
+    .map(
+      (e) =>
+        `<div class="item"><div class="index">${e.index}</div><div class="word">${e.word}</div></div>`,
+    )
+    .join("");
+
+  const padding = (document.body.scrollWidth % 150) / 2;
+  document.body.style.paddingLeft = `${padding}px`;
+  document.body.style.paddingRight = `${padding}px`;
 
   // edit title
   const titleDom = document.querySelector("#title");

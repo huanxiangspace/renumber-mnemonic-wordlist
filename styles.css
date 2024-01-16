@@ -3,19 +3,21 @@ body {
   margin: 0;
 }
 
-body::after {
-  content: "";
-  display: block;
-  clear: both;
-}
-
 h1 {
   text-align: center;
   margin-top: 0;
   cursor: pointer;
 }
 
-li {
-  width: 120px;
-  float: left;
+#list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 150px);
+}
+
+.item {
+  display: flex;
+}
+
+.item .index {
+  width: 50px;
 }
