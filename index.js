@@ -2058,14 +2058,28 @@ zoo`.split("\n");
     });
   }
 
-  list.sort((a, b) => a.word.localeCompare(b.word));
+  const resortWords = async (sortBy, isImgReturn) => {
+    const sortFn = {
+      alphabet: (a, b) => a.word.localeCompare(b.word),
+      number: (a, b) => a.index - b.index,
+    }[sortBy];
+    document.querySelector("#list").innerHTML = "";
+    list.sort(sortFn);
+    document.querySelector("#list").innerHTML = list
+      .map(
+        (e) =>
+          `<div class="item"><div class="index">${e.index}</div><div class="word">${e.word}</div></div>`,
+      )
+      .join("");
+    if (isImgReturn) {
+      const canvas = await html2canvas(document.body);
+      const img = new Image();
+      img.src = canvas.toDataURL("image/png");
+      return img;
+    }
+  };
 
-  document.querySelector("#list").innerHTML = list
-    .map(
-      (e) =>
-        `<div class="item"><div class="index">${e.index}</div><div class="word">${e.word}</div></div>`,
-    )
-    .join("");
+  resortWords("number");
 
   const padding = (document.body.scrollWidth % 150) / 2;
   document.body.style.paddingLeft = `${padding}px`;
@@ -2084,15 +2098,15 @@ zoo`.split("\n");
   const btnsDom = document.querySelector(".btns");
   const saveDom = document.querySelector("#save");
   const previewDom = document.querySelector("#preview");
-  saveDom.addEventListener("click", () => {
+  const previewADom = document.querySelector("#preview-a");
+  const previewNDom = document.querySelector("#preview-n");
+  saveDom.addEventListener("click", async () => {
     btnsDom.style.display = "none";
-    html2canvas(document.body).then((canvas) => {
-      const img = new Image();
-      img.src = canvas.toDataURL("image/png");
-      previewDom.innerHTML = "";
-      previewDom.appendChild(img);
-      previewDom.style.display = "flex";
-    });
+    previewADom.innerHTML = "";
+    previewADom.appendChild(await resortWords("alphabet", true));
+    previewNDom.innerHTML = "";
+    previewNDom.appendChild(await resortWords("number", true));
+    previewDom.style.display = "flex";
   });
   previewDom.addEventListener("click", () => {
     previewDom.style.display = "none";

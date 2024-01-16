@@ -14,11 +14,11 @@ h1 {
   grid-template-columns: repeat(auto-fill, 150px);
 }
 
-.item {
+#list .item {
   display: flex;
 }
 
-.item .index {
+#list .item .index {
   width: 50px;
 }
 
@@ -52,9 +52,14 @@ button {
   background: rgba(0, 0, 0, 0.5);
   justify-content: center;
   align-items: center;
+  gap: 20px;
+}
+
+#preview h5 {
+  color: #fff;
+  text-align: center;
 }
 
 #preview img {
-  max-width: 80%;
-  max-height: 80%;
+  height: 80vh;
 }
