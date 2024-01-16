@@ -8,19 +8,32 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <h1 id="title">Title ✍️</h1>
-    <div id="list"></div>
+    <div id="content">
+      <h1 id="title"></h1>
+      <div id="list"></div>
+    </div>
     <div class="btns">
       <button id="save">Save As Image</button>
+      <h3 id="generating">Generating images...</h3>
     </div>
     <div id="preview">
       <div class="item">
         <h5>Sort by Alphabet</h5>
-        <div id="preview-a"></div>
+        <div>
+          <img id="preview-a" />
+        </div>
+        <a id="dl-link-a" href="" download="">
+          <button>Download</button>
+        </a>
       </div>
       <div class="item">
         <h5>Sort by Number</h5>
-        <div id="preview-n"></div>
+        <div>
+          <img id="preview-n" />
+        </div>
+        <a id="dl-link-n" href="" download="">
+          <button>Download</button>
+        </a>
       </div>
     </div>
     <script src="libs/html2canvas.min.js"></script>

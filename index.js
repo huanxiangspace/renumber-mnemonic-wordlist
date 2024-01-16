@@ -2048,6 +2048,8 @@ zero
 zone
 zoo`.split("\n");
 
+  let titleText = "Title ✍️";
+
   const list = [];
 
   while (words.length) {
@@ -2072,25 +2074,30 @@ zoo`.split("\n");
       )
       .join("");
     if (isImgReturn) {
-      const canvas = await html2canvas(document.body);
-      const img = new Image();
-      img.src = canvas.toDataURL("image/png");
-      return img;
+      const canvas = await html2canvas(contentDom);
+      return canvas.toDataURL("image/png");
     }
   };
 
-  resortWords("number");
+  const updateTitle = (title) => {
+    const t = Date.now();
+    titleDom.innerHTML = title;
+    dlLinkADom.download = `${title}-sort-by-alphabet-${t}.png`;
+    dlLinkNDom.download = `${title}-sort-by-number-${t}.png`;
+  };
 
+  const contentDom = document.querySelector("#content");
   const padding = (document.body.scrollWidth % 150) / 2;
-  document.body.style.paddingLeft = `${padding}px`;
-  document.body.style.paddingRight = `${padding}px`;
+  contentDom.style.paddingLeft = `${padding}px`;
+  contentDom.style.paddingRight = `${padding}px`;
 
   // edit title
   const titleDom = document.querySelector("#title");
   titleDom.addEventListener("click", () => {
     const title = prompt("Input Title:");
     if (typeof title === "string") {
-      titleDom.innerHTML = title;
+      titleText = title;
+      updateTitle(title);
     }
   });
 
@@ -2099,17 +2106,37 @@ zoo`.split("\n");
   const saveDom = document.querySelector("#save");
   const previewDom = document.querySelector("#preview");
   const previewADom = document.querySelector("#preview-a");
+  const dlLinkADom = document.querySelector("#dl-link-a");
   const previewNDom = document.querySelector("#preview-n");
+  const dlLinkNDom = document.querySelector("#dl-link-n");
+  const generatingDom = document.querySelector("#generating");
   saveDom.addEventListener("click", async () => {
-    btnsDom.style.display = "none";
-    previewADom.innerHTML = "";
-    previewADom.appendChild(await resortWords("alphabet", true));
-    previewNDom.innerHTML = "";
-    previewNDom.appendChild(await resortWords("number", true));
+    generatingDom.style.display = "block";
+    saveDom.style.display = "none";
+    await new Promise((r) => setTimeout(r, 20));
+    let url = await resortWords("alphabet", true);
+    previewADom.src = url;
+    dlLinkADom.href = url;
+    url = await resortWords("number", true);
+    previewNDom.src = url;
+    dlLinkNDom.href = url;
     previewDom.style.display = "flex";
+    generatingDom.style.display = "none";
+    saveDom.style.display = "inline";
+    btnsDom.style.display = "none";
   });
   previewDom.addEventListener("click", () => {
     previewDom.style.display = "none";
     btnsDom.style.display = "block";
   });
+
+  const stopEvent = (e) => {
+    e.stopPropagation();
+  };
+  dlLinkADom.addEventListener("click", stopEvent);
+  dlLinkNDom.addEventListener("click", stopEvent);
+
+  // init
+  resortWords("number");
+  updateTitle(titleText);
 })();
