@@ -2079,4 +2079,23 @@ zoo`.split("\n");
       titleDom.innerHTML = title;
     }
   });
+
+  // save
+  const btnsDom = document.querySelector(".btns");
+  const saveDom = document.querySelector("#save");
+  const previewDom = document.querySelector("#preview");
+  saveDom.addEventListener("click", () => {
+    btnsDom.style.display = "none";
+    html2canvas(document.body).then((canvas) => {
+      const img = new Image();
+      img.src = canvas.toDataURL("image/png");
+      previewDom.innerHTML = "";
+      previewDom.appendChild(img);
+      previewDom.style.display = "flex";
+    });
+  });
+  previewDom.addEventListener("click", () => {
+    previewDom.style.display = "none";
+    btnsDom.style.display = "block";
+  });
 })();
